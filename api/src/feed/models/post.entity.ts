@@ -8,6 +8,6 @@ export class FeedPostEntity {
   @Column()
   body: string;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
