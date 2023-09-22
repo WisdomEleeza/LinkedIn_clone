@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '../app.controller';
+import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FeedModule } from './feed.module';
-import { FeedController } from './controllers/feed.controller';
+import { FeedModule } from './feed/feed.module';
+import { FeedController } from './feed/controllers/feed.controller';
 
 @Module({
   imports: [
