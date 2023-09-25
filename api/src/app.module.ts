@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { FeedModule } from './feed/feed.module';
-import { FeedController } from './feed/controllers/feed.controller';
+import { AuthModule } from './auth/auth.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './core/all-exceptions.filter';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -16,11 +20,19 @@ import { FeedController } from './feed/controllers/feed.controller';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
-      synchronize: true, // this should not be used in production
+      synchronize: true, // shouldn't be used in production - may lose data
     }),
     FeedModule,
+    AuthModule,
+    ChatModule,
   ],
-  controllers: [AppController, FeedController],
-  providers: [],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}
